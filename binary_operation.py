@@ -4,34 +4,96 @@ def division_binary():
 def multiply_binary():
     print("multiply")
 
-def subtract_binary(binary1, binary2):
-    max_len = max(len(binary1), len(binary2))
+# def subtract_binary(binary1, binary2):
+#     max_len = max(len(binary1), len(binary2))
 
-    binary1 = binary1.zfill(max_len)
-    binary2 = binary2.zfill(max_len)
+#     binary1 = binary1.zfill(max_len)
+#     binary2 = binary2.zfill(max_len)
 
-    result = ''
-    temp = 0
+#     result = ''
+#     temp = 0
 
-    for i in range(max_len - 1, - 1, -1): 
-        num = int(binary1[i]) - int(binary2[i]) - temp
-        if num % 2 == 1: 
-            result = '1' + result 
-        else: 
-            result = '0' + result
+#     for i in range(max_len - 1, - 1, -1): 
+#         num = int(binary1[i]) - int(binary2[i]) - temp
+#         if num % 2 == 1: 
+#             result = '1' + result 
+#         else: 
+#             result = '0' + result
         
-        if num < 0: 
-            temp = 1
-        else: 
-            temp = 0
+#         if num < 0: 
+#             temp = 1
+#         else: 
+#             temp = 0
     
-    if temp != 0: 
-        result = '01' + result 
+#     if temp != 0: 
+#         result = '01' + result 
 
-    if int(result) == 0: 
-        result = 0
+#     if int(result) == 0: 
+#         result = 0
     
+#     return result
+
+def subtract_binary(binary1, binary2):
+    # Split binary numbers into integer and fractional parts
+    if '.' in binary1:
+        int1, frac1 = binary1.split('.')
+    else:
+        int1 = binary1
+        frac1 = ''
+    if '.' in binary2:
+        int2, frac2 = binary2.split('.')
+    else:
+        int2 = binary2
+        frac2 = ''
+
+    # Determine the maximum length for integer and fractional parts
+    max_int_len = max(len(int1), len(int2))
+    max_frac_len = max(len(frac1), len(frac2))
+
+    # Zero-pad integer and fractional parts to the maximum length
+    int1 = int1.zfill(max_int_len)
+    int2 = int2.zfill(max_int_len)
+    frac1 = frac1.ljust(max_frac_len, '0')
+    frac2 = frac2.ljust(max_frac_len, '0')
+
+    # Initialize variables for result and borrowing
+    result_int = ''
+    result_frac = ''
+    borrow = 0
+
+    # Subtract integer parts
+    for i in range(max_int_len - 1, -1, -1):
+        diff = int(int1[i]) - int(int2[i]) - borrow
+        if diff < 0:
+            diff += 2
+            borrow = 1
+        else:
+            borrow = 0
+        result_int = str(diff) + result_int
+
+    # Subtract fractional parts
+    for i in range(max_frac_len):
+        diff = int(frac1[i]) - int(frac2[i]) - borrow
+        if diff < 0:
+            diff += 2
+            borrow = 1
+        else:
+            borrow = 0
+        result_frac += str(diff)
+
+    # If there's still borrowing, overflow to the leftmost bit of the integer part
+    if borrow == 1:
+        result_int = bin(int(result_int, 2) - 1)[2:]  # Subtract 1 from the integer part
+        result_int = result_int.zfill(max_int_len)  # Zero-pad to ensure correct length
+
+    # Combine integer and fractional parts
+    result = result_int.lstrip('0') or '0'  # Remove leading zeroes
+    if result_frac:
+        result += '.' + result_frac.rstrip('0')  # Remove trailing zeroes
+
     return result
+
+
 
 
 def add_binary(binary1, binary2):
@@ -75,12 +137,12 @@ def add_binary(binary1, binary2):
         carry = bit_sum // 2
 
    int_sum = carry
+
    for i in range(len(int1) - 1, -1, -1):
         bit_sum = int(int1[i]) + int(int2[i]) + int_sum
         result_int = str(bit_sum % 2) + result_int
         int_sum = bit_sum // 2
    result_int = str(int_sum % 2) + result_int
-
 
    result = result_int + result_frac
    return result
