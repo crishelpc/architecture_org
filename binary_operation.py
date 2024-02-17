@@ -4,34 +4,6 @@ def division_binary():
 def multiply_binary():
     print("multiply")
 
-# def subtract_binary(binary1, binary2):
-#     max_len = max(len(binary1), len(binary2))
-
-#     binary1 = binary1.zfill(max_len)
-#     binary2 = binary2.zfill(max_len)
-
-#     result = ''
-#     temp = 0
-
-#     for i in range(max_len - 1, - 1, -1): 
-#         num = int(binary1[i]) - int(binary2[i]) - temp
-#         if num % 2 == 1: 
-#             result = '1' + result 
-#         else: 
-#             result = '0' + result
-        
-#         if num < 0: 
-#             temp = 1
-#         else: 
-#             temp = 0
-    
-#     if temp != 0: 
-#         result = '01' + result 
-
-#     if int(result) == 0: 
-#         result = 0
-    
-#     return result
 
 def subtract_binary(binary1, binary2):
     # Split binary numbers into integer and fractional parts
@@ -61,7 +33,17 @@ def subtract_binary(binary1, binary2):
     result_frac = ''
     borrow = 0
 
-    # Subtract integer parts
+    # Subtract fractional parts
+    for i in range(max_frac_len - 1, -1, -1):
+        diff = int(frac1[i]) - int(frac2[i]) - borrow
+        if diff < 0:
+            diff += 2
+            borrow = 1
+        else:
+            borrow = 0
+        result_frac = str(diff) + result_frac
+
+    # Subtract integer parts with consideration of borrow from fractional part
     for i in range(max_int_len - 1, -1, -1):
         diff = int(int1[i]) - int(int2[i]) - borrow
         if diff < 0:
@@ -71,29 +53,17 @@ def subtract_binary(binary1, binary2):
             borrow = 0
         result_int = str(diff) + result_int
 
-    # Subtract fractional parts
-    for i in range(max_frac_len):
-        diff = int(frac1[i]) - int(frac2[i]) - borrow
-        if diff < 0:
-            diff += 2
-            borrow = 1
-        else:
-            borrow = 0
-        result_frac += str(diff)
-
-    # If there's still borrowing, overflow to the leftmost bit of the integer part
-    if borrow == 1:
-        result_int = bin(int(result_int, 2) - 1)[2:]  # Subtract 1 from the integer part
-        result_int = result_int.zfill(max_int_len)  # Zero-pad to ensure correct length
-
     # Combine integer and fractional parts
     result = result_int.lstrip('0') or '0'  # Remove leading zeroes
     if result_frac:
+        result = result_int.lstrip('0') or '0'  # Remove leading zeroes
         result += '.' + result_frac.rstrip('0')  # Remove trailing zeroes
+    if result_frac in ['0' * (i + 1) for i in range(8)]:
+        result = result[:-1]
+        
+
 
     return result
-
-
 
 
 def add_binary(binary1, binary2):
@@ -152,7 +122,7 @@ def complement(bin_str:str):
     def invert(input):
         inversed = False
         input = input[::-1]
-        for i, char in enumerate(input):
+        for i, char in enumerate(input): 
             if inversed:
                 input = input[:i] + ('.' if char == '.' else '0' if char == '1' else '1') + input[i + 1:]
             if char == '1':
