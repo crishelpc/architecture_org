@@ -46,8 +46,13 @@ while True:
         binary_operations_menu()
         binary_option = int(input("Enter your option for Binary Options: "))
         if binary_option == 1: 
-            binary_operation.division_binary()
-        
+            os.system('cls || clear')
+            print('<<< BINARY DIVISION >>>')
+            binary1 = input("Enter the first binary number: ")
+            binary2 = input("Enter the second binary number: ")
+            binary_operation.division_binary(binary1,binary2)
+            input(result)
+
         elif binary_option == 2: 
             binary_operation.multiply_binary()
 

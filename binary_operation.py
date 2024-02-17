@@ -1,5 +1,7 @@
 def division_binary():
     print("division")
+
+
         
 def multiply_binary():
     print("multiply")
