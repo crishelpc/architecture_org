@@ -1,5 +1,6 @@
 import binary_operation
 import number_conversion
+import signed_binary_operation
 import os
 
 
@@ -27,6 +28,15 @@ def menu():
     print("[2] Number System Conversion")
     print("[3] Exit")
 
+def is_signed():
+    response = input("Is it signed? [y/n]: ")
+    if response in ['y', 'Y', 'yes', 'YES', '1']:
+        return True
+    elif response in ['n', 'N', 'no', 'NO', '0']:
+        return False
+    else:
+        is_signed()
+
 while True:
     menu()
     option = int(input("Enter your option: "))
@@ -46,7 +56,12 @@ while True:
             print('<<< BINARY SUBTRACTION >>>')
             binary1 = input("Enter the first binary number: ")
             binary2 = input("Enter the second binary number: ")
-            result = binary_operation.subtract_binary(binary1, binary2)
+            
+            if is_signed():
+                result = signed_binary_operation.subtract_binary(binary1, binary2)
+            else:
+                result = binary_operation.subtract_binary(binary1, binary2)
+            
             input(result)
 
         elif binary_option == 4: 
@@ -54,9 +69,12 @@ while True:
             print('<<< BINARY ADDITION >>>')
             binary1 = input("Enter the first binary number: ")
             binary2 = input("Enter the second binary number: ")
-            result = binary_operation.add_binary(binary1, binary2)
+            
+            if is_signed():
+                result = signed_binary_operation.add_binary(binary1, binary2)
+            else:
+                result = binary_operation.add_binary(binary1, binary2)
             input(f"{binary1} + {binary2} = {result}")
-
         
         elif binary_option == 5: 
             os.system('cls || clear')

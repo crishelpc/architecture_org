@@ -66,56 +66,56 @@ def subtract_binary(binary1, binary2):
     return result
 
 
+
 def add_binary(binary1, binary2):
+    if '.' in binary1:
+        int1, frac1 = binary1.split('.')
+    else:
+        int1 = binary1
+        frac1 = ''
+    if '.' in binary2:
+        int2, frac2 = binary2.split('.')
+    else:
+        int2 = binary2
+        frac2 = ''
 
-   if '.' in binary1:
-      int1, frac1 = binary1.split('.')
-   else:
-       int1 = binary1
-       frac1 = '' 
-   if '.' in binary2:
-      int2, frac2 = binary2.split('.')
-   else:
-       int2 = binary2
-       frac2 = ''
-
-   if '.'in binary1 or '.' in binary2:
+    if '.' in binary1 or '.' in binary2:
         max_len_frac = max(len(frac1), len(frac2))
-        frac1 += '0' * (max_len_frac - len(frac1))
-        frac2 += '0' * (max_len_frac - len(frac2))
+        frac1 = frac1.ljust(max_len_frac, '0')
+        frac2 = frac2.ljust(max_len_frac, '0')
 
-   result_int = ''
-   result_frac = ''
-   carry = 0
+    max_len_int = max(len(int1), len(int2))
+    int1 = int1.zfill(max_len_int)
+    int2 = int2.zfill(max_len_int)
 
-   if frac1 or frac2:
-        for i in range(max_len_frac - 1, -1, -1):
-                if frac1[i] == '.':
-                    result_frac = '.' + result_frac
-                else:
-                    bit_sum = int(frac1[i]) + int(frac2[i]) + carry
-                    result_frac = str(bit_sum % 2) + result_frac
-                    carry = bit_sum // 2
-#    else:
-#         result_frac = '00'
-   if result_frac:
-        result_frac = '.' + result_frac 
+    result_int = ''
+    result_frac = ''
+    carry = 0
 
-   while carry:
-        bit_sum = carry
-        result_frac = str(bit_sum % 2) + result_frac
-        carry = bit_sum // 2
+    for i in range(len(frac1) - 1, -1, -1):
+        if frac1[i] == '.':
+            result_frac = '.' + result_frac
+        else:
+            bit_sum = int(frac1[i]) + int(frac2[i]) + carry
+            result_frac = str(bit_sum % 2) + result_frac
+            carry = bit_sum // 2
 
-   int_sum = carry
-
-   for i in range(len(int1) - 1, -1, -1):
+    int_sum = carry
+    for i in range(len(int1) - 1, -1, -1):
         bit_sum = int(int1[i]) + int(int2[i]) + int_sum
         result_int = str(bit_sum % 2) + result_int
         int_sum = bit_sum // 2
-   result_int = str(int_sum % 2) + result_int
 
-   result = result_int + result_frac
-   return result
+    result_int = str(int_sum % 2) + result_int
+
+    result = result_int.lstrip('0') or '0'  # Remove leading zeroes
+    if result_frac:
+        result = result_int.lstrip('0') or '0'  # Remove leading zeroes
+        result += '.' + result_frac.rstrip('0')  # Remove trailing zeroes
+    if result_frac in ['0' * (i + 1) for i in range(8)]:
+        result = result[:-1]
+    return result
+
 
 
 def complement(bin_str:str):
@@ -152,3 +152,8 @@ def complement(bin_str:str):
 # print(f"6.) {complement("10010100.11")}")
 # print(f"7.) {complement("00110101.010")}")
 
+# if __name__ == "__main__":
+#     print(f"1.) {subtract_binary('1011', '0111')}")
+#     print(f"2.) {subtract_binary('1011.011', '0111.11')}")
+#     print(f"3.) {subtract_binary('1011.01', '1100.01')}")
+#     print(f"4.) {subtract_binary('1111', '1001')}")
