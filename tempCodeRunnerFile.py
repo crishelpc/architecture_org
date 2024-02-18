@@ -1,2 +1,1 @@
- # binaryToDecimal(101.1)
-    # binaryToDecimal(1001)
+result = binary_operation.division_binary(binary1, binary2)

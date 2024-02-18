@@ -1,10 +1,43 @@
+# def division_binary(binary1, binary2):
+#     result = ''
+#     temp = '0'
+#     remainder = '0'
+
+#     for i in range(len(binary1)):
+#         if int(binary2) > int(temp):
+#             result += '0'
+#             temp += binary1[i]
+
+#         else: 
+#             remainder = subtract_binary(temp, binary2)
+#             if remainder == '0':
+#                 temp = binary1[i]
+#                 result += '1'
+            
+#             else:
+#                 remainder = str(remainder).lstrip('0')
+#                 result += '1'
+#                 temp = remainder + binary1[i]
+    
+#     if int(temp) != 0:
+#         result += '1'
+#     else:
+#         result += '0'
+
+#     return result
+
 def division_binary(binary1, binary2):
     result = ''
     temp = '0'
     remainder = '0'
+    decimal_point_pos = binary1.find('.') - binary2.find('.')
+
+    # Remove decimal points from binary strings
+    binary1 = binary1.replace('.', '')
+    binary2 = binary2.replace('.', '')
 
     for i in range(len(binary1)):
-        if int(binary2) > int(temp):
+        if int(binary2, 2) > int(temp, 2):  # Convert to base-2 integer
             result += '0'
             temp += binary1[i]
 
@@ -19,15 +52,18 @@ def division_binary(binary1, binary2):
                 result += '1'
                 temp = remainder + binary1[i]
     
-    if int(temp) != 0:
+    if int(temp, 2) != 0:  # Convert to base-2 integer
         result += '1'
     else:
         result += '0'
 
+    # Adjust decimal point position
+    if decimal_point_pos > 0:
+        result = result[:-decimal_point_pos] + '.' + result[-decimal_point_pos:]
+
     return result
 
 
-      
 def multiply_binary():
     print("multiply")
 
