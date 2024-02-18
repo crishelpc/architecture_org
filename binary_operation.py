@@ -1,8 +1,33 @@
-def division_binary():
-    print("division")
+def division_binary(binary1, binary2):
+    result = ''
+    temp = '0'
+    remainder = '0'
+
+    for i in range(len(binary1)):
+        if int(binary2) > int(temp):
+            result += '0'
+            temp += binary1[i]
+
+        else: 
+            remainder = subtract_binary(temp, binary2)
+            if remainder == '0':
+                temp = binary1[i]
+                result += '1'
+            
+            else:
+                remainder = str(remainder).lstrip('0')
+                result += '1'
+                temp = remainder + binary1[i]
+    
+    if int(temp) != 0:
+        result += '1'
+    else:
+        result += '0'
+
+    return result
 
 
-        
+      
 def multiply_binary():
     print("multiply")
 

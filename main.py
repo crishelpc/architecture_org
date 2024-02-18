@@ -50,8 +50,9 @@ while True:
             print('<<< BINARY DIVISION >>>')
             binary1 = input("Enter the first binary number: ")
             binary2 = input("Enter the second binary number: ")
-            binary_operation.division_binary(binary1,binary2)
-            input(result)
+            result = binary_operation.division_binary(binary1, binary2)
+            input(f"{binary1} / {binary2} = {result}")
+            
 
         elif binary_option == 2: 
             binary_operation.multiply_binary()
@@ -95,16 +96,16 @@ while True:
         number_conversion_menu()
         number_conversion_option = int(input("Enter your option for Number System Conversions:"))
         if number_conversion_option == 1: 
-            number_conversion.binary_to_any()
+            number_conversion.binary_to_x()
 
         elif number_conversion_option == 2:
-            number_conversion.decimal_to_any()
+            number_conversion.decimal_to_x()
 
         elif number_conversion_option == 3: 
-            number_conversion.octa_to_any()
+            number_conversion.octa_to_x()
         
         elif number_conversion_option == 4: 
-            number_conversion.hexa_to_any()
+            number_conversion.hexa_to_x()
         
         else: 
             menu()
