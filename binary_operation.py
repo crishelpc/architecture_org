@@ -1,67 +1,61 @@
-# def division_binary(binary1, binary2):
-#     result = ''
-#     temp = '0'
-#     remainder = '0'
-
-#     for i in range(len(binary1)):
-#         if int(binary2) > int(temp):
-#             result += '0'
-#             temp += binary1[i]
-
-#         else: 
-#             remainder = subtract_binary(temp, binary2)
-#             if remainder == '0':
-#                 temp = binary1[i]
-#                 result += '1'
-            
-#             else:
-#                 remainder = str(remainder).lstrip('0')
-#                 result += '1'
-#                 temp = remainder + binary1[i]
-    
-#     if int(temp) != 0:
-#         result += '1'
-#     else:
-#         result += '0'
-
-#     return result
-
 def division_binary(binary1, binary2):
     result = ''
-    temp = '0'
-    remainder = '0'
-    decimal_point_pos = binary1.find('.') - binary2.find('.')
+    temp = ''
+    point_pos1 =  binary1.find('.')
+    point_pos2 =  binary2.find('.')
 
-    # Remove decimal points from binary strings
+    decimal_point_pos = int(binary1[:point_pos1], 2) // int(binary2[:point_pos2], 2) - 1
+    if decimal_point_pos >= 0:
+        decimal_point_pos = bin(decimal_point_pos)[2:]
+    else:
+        decimal_point_pos = bin(decimal_point_pos)[3:]
+    decimal_point_pos = len(decimal_point_pos)
+
     binary1 = binary1.replace('.', '')
     binary2 = binary2.replace('.', '')
 
-    for i in range(len(binary1)):
-        if int(binary2, 2) > int(temp, 2):  # Convert to base-2 integer
-            result += '0'
-            temp += binary1[i]
+    for digit in binary1:
+        temp += digit
+        if int(temp, 2) >= int(binary2, 2):
+            quotient = '1'
+            temp = subtract_binary(temp, binary2)
+        else:
+            quotient = '0'
+        result += quotient
 
-        else: 
-            remainder = subtract_binary(temp, binary2)
-            if remainder == '0':
-                temp = binary1[i]
-                result += '1'
-            
-            else:
-                remainder = str(remainder).lstrip('0')
-                result += '1'
-                temp = remainder + binary1[i]
-    
-    if int(temp, 2) != 0:  # Convert to base-2 integer
-        result += '1'
-    else:
-        result += '0'
+    remainder = temp
+    precision = 24  # setting precision
 
-    # Adjust decimal point position
-    if decimal_point_pos > 0:
-        result = result[:-decimal_point_pos] + '.' + result[-decimal_point_pos:]
+    while len(result) - result.find('.') - 1 < precision:
+        remainder += '0'
+        temp = remainder
+        if int(temp, 2) >= int(binary2, 2):
+            quotient = '1'
+            temp = subtract_binary(temp, binary2)
+        else:
+            quotient = '0'
+        result += quotient
+        remainder = temp
+
+    result = result.lstrip('0')
+    result = result.rstrip('0')
+
+    if decimal_point_pos == len(result):
+        result = result
+    elif decimal_point_pos > 1:
+        result = result[:decimal_point_pos] + '.' + result[decimal_point_pos:]
+    elif decimal_point_pos == 1:
+        result = "0." + result
+
 
     return result
+
+# if __name__ == "__main__":
+#     print(f"1.) {division_binary('1101.0101', '11.11')}")
+#     print(f"2.) {division_binary('1110', '10')}")
+#     print(f"3.) {division_binary("1001.11", "11.1")}")
+#     print(f"4.) {division_binary("1001.1", "011.01")}")
+#     print(f"5.) {division_binary("1010.11", "1110.01")}")
 
 
 def multiply_binary():

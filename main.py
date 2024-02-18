@@ -50,7 +50,12 @@ while True:
             print('<<< BINARY DIVISION >>>')
             binary1 = input("Enter the first binary number: ")
             binary2 = input("Enter the second binary number: ")
-            result = binary_operation.division_binary(binary1, binary2)
+
+            if is_signed():
+                result = binary_operation.division_binary(binary1, binary2)
+            else: 
+                result = binary_operation.division_binary(binary1, binary2)
+                
             input(f"{binary1} / {binary2} = {result}")
             
 
