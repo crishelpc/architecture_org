@@ -52,7 +52,7 @@ while True:
             binary2 = input("Enter the second binary number: ")
 
             if is_signed():
-                result = binary_operation.division_binary(binary1, binary2)
+                result = signed_binary_operation.division_binary(binary1, binary2)
             else: 
                 result = binary_operation.division_binary(binary1, binary2)
                 
@@ -60,7 +60,12 @@ while True:
             
 
         elif binary_option == 2: 
-            binary_operation.multiply_binary()
+            os.system('cls || clear')
+            print('<<< BINARY MULTIPLICATION >>>')
+            binary1 = input("Enter the first binary number: ")
+            binary2 = input("Enter the second binary number: ")
+            result = binary_operation.multiply_binary(binary1,binary2)
+            input(f"{binary1} * {binary2} = {result}")
 
         elif binary_option == 3: 
             os.system('cls || clear')

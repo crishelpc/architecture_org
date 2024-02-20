@@ -3,13 +3,25 @@ def division_binary(binary1, binary2):
     temp = ''
     point_pos1 =  binary1.find('.')
     point_pos2 =  binary2.find('.')
+    int1 =  int(binary1[:point_pos1], 2)
+    int2 = int(binary2[:point_pos2], 2) 
+    
+    
+    decimal_point_pos = int1 // int2 - 1
 
-    decimal_point_pos = int(binary1[:point_pos1], 2) // int(binary2[:point_pos2], 2) - 1
     if decimal_point_pos >= 0:
         decimal_point_pos = bin(decimal_point_pos)[2:]
+    
     else:
         decimal_point_pos = bin(decimal_point_pos)[3:]
+    
+
+    if point_pos1 == -1:
+        decimal_point_pos = bin(int(binary1, 2))[2:]
+
+    print(decimal_point_pos)
     decimal_point_pos = len(decimal_point_pos)
+
 
     binary1 = binary1.replace('.', '')
     binary2 = binary2.replace('.', '')
@@ -58,8 +70,52 @@ def division_binary(binary1, binary2):
 #     print(f"5.) {division_binary("1010.11", "1110.01")}")
 
 
-def multiply_binary():
-    print("multiply")
+def multiply_binary(binary1, binary2):
+    # Check if any of the numbers is zero
+    if binary1 == '0' or binary2 == '0':
+        return '0'
+
+    # Split binary numbers into integer and fractional parts
+    int1, frac1 = binary1.split('.') if '.' in binary1 else (binary1, '')
+    int2, frac2 = binary2.split('.') if '.' in binary2 else (binary2, '')
+
+    # Determine the length of the fractional part
+    max_frac_len = max(len(frac1), len(frac2))
+
+    # Extend the fractional parts with zeros for equal length
+    frac1 = frac1.ljust(max_frac_len, '0')
+    frac2 = frac2.ljust(max_frac_len, '0')
+
+    # Extend the integer parts with zeros for equal length
+    max_int_len = max(len(int1), len(int2))
+    int1 = int1.zfill(max_int_len)
+    int2 = int2.zfill(max_int_len)
+
+    # Initialize result variables
+    result_int = '0'
+    result_frac = ''
+
+    # Perform multiplication for integer parts
+    for i in range(len(int2)):
+        if int2[i] == '1':
+            # Shift and add the first number
+            shifted = int1 + '0' * (len(int2) - i - 1)
+            result_int = add_binary(result_int, shifted)
+
+    # Perform multiplication for fractional parts
+    for i in range(len(frac2)):
+        if frac2[i] == '1':
+            # Shift and add the first number
+            shifted_frac = frac1 + '0' * (i + 1)
+            result_frac = add_binary(result_frac, shifted_frac)
+
+    # Combine integer and fractional parts
+    result = result_int + '.' + result_frac if result_frac else result_int
+
+    # Remove leading and trailing zeroes
+    result = result.lstrip('0').rstrip('0').rstrip('.') or '0'
+
+    return result
 
 
 def subtract_binary(binary1, binary2):
